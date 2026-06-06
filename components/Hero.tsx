@@ -1,20 +1,16 @@
 import Link from "next/link";
 
-import HeroSmoke from "@/components/HeroSmoke";
-
 interface HeroProps {
   tagline: string;
 }
 
 export default function Hero({ tagline }: HeroProps) {
   return (
-    <section className="relative overflow-hidden border-b border-border">
+    <section className="relative overflow-hidden border-b border-border/60">
       <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(52,211,153,0.18),transparent_55%),radial-gradient(ellipse_at_bottom_right,rgba(16,185,129,0.12),transparent_50%)]"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,transparent,rgba(10,10,11,0.45))]"
         aria-hidden="true"
       />
-      <HeroSmoke />
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,transparent,rgba(10,10,11,0.85))]" />
 
       <div className="relative mx-auto flex min-h-[70vh] max-w-6xl flex-col justify-center px-6 py-24">
         <p className="animate-fade-up mb-4 text-sm font-medium uppercase tracking-[0.2em] text-accent">

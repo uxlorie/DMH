@@ -5,5 +5,5 @@ export default function StudioLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return children;
+  return <div className="min-h-full bg-background">{children}</div>;
 }

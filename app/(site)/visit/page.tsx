@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { BUSINESS_HOURS } from "@/lib/defaults";
 import { getSiteSettings } from "@/sanity/lib/queries";
 
 export const metadata: Metadata = {
@@ -10,6 +11,10 @@ export const metadata: Metadata = {
 
 export default async function VisitPage() {
   const settings = await getSiteSettings();
+  const today = new Date().toLocaleDateString("en-US", {
+    weekday: "long",
+    timeZone: "America/Chicago",
+  });
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-16">
@@ -17,7 +22,7 @@ export default async function VisitPage() {
         Plan your visit
       </p>
       <h1 className="font-display mt-3 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-        Find us on Miracle Strip
+        Find us in downtown FWB
       </h1>
       <p className="mt-4 max-w-2xl text-lg text-muted">
         Downtown Music Hall sits at 212 Miracle Strip Pkwy SE in downtown Fort
@@ -39,10 +44,37 @@ export default async function VisitPage() {
             <h2 className="font-display text-xl font-bold text-foreground">
               Hours
             </h2>
-            <p className="mt-3 leading-relaxed text-muted">
-              {settings.hours ??
-                "Doors open one hour before showtime. Bar and pizza service available during events."}
-            </p>
+            <dl className="mt-4 space-y-2">
+              {BUSINESS_HOURS.map(({ day, hours }) => {
+                const isToday = day === today;
+
+                return (
+                  <div
+                    key={day}
+                    className="flex items-baseline justify-between gap-4"
+                  >
+                    <dt
+                      className={
+                        isToday
+                          ? "font-semibold text-foreground"
+                          : "text-muted"
+                      }
+                    >
+                      {day}
+                    </dt>
+                    <dd
+                      className={
+                        isToday
+                          ? "font-semibold text-foreground"
+                          : "text-muted"
+                      }
+                    >
+                      {hours}
+                    </dd>
+                  </div>
+                );
+              })}
+            </dl>
           </section>
 
           <section className="rounded-2xl border border-border bg-surface p-6">

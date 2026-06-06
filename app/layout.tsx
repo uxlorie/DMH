@@ -50,7 +50,7 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${syne.variable} h-full scroll-smooth`}
     >
-      <body className="min-h-full bg-background text-foreground antialiased">
+      <body className="min-h-full text-foreground antialiased">
         {children}
       </body>
     </html>
