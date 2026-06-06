@@ -29,7 +29,6 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
     "https://maps.google.com/maps?q=212+Miracle+Strip+Pkwy+SE,+Fort+Walton+Beach,+FL+32548&output=embed",
   defaultTicketUrl: EVENTBRITE_ORGANIZER_URL,
   socialLinks: [
-    { platform: "Website", url: "https://www.downtown850.com/" },
     { platform: "Eventbrite", url: EVENTBRITE_ORGANIZER_URL },
     {
       platform: "Facebook",
