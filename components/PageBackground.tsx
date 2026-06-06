@@ -26,7 +26,7 @@ export default function PageBackground() {
       {!reducedMotion && (
         <PrismaticBurst
           animationType="rotate3d"
-          intensity={1.6}
+          intensity={2.5}
           speed={0.5}
           distort={1}
           paused={false}

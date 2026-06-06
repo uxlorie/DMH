@@ -50,12 +50,6 @@ export default function Header() {
               </Link>
             );
           })}
-          <Link
-            href="/shows"
-            className="rounded-full bg-accent px-4 py-2 text-sm font-semibold text-background transition-colors hover:bg-accent-hover"
-          >
-            Get Tickets
-          </Link>
         </nav>
 
         <button
@@ -115,13 +109,6 @@ export default function Header() {
                 </Link>
               );
             })}
-            <Link
-              href="/shows"
-              onClick={closeMobile}
-              className="mt-2 inline-flex w-fit rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-background"
-            >
-              Get Tickets
-            </Link>
           </div>
         </nav>
       ) : null}
