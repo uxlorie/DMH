@@ -1,36 +1,142 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Downtown Music Hall
 
-## Getting Started
+A sleek, dark-themed marketing website for **Downtown Music Hall** — a live music venue in the Florida Panhandle. Built with Next.js and Sanity CMS.
 
-First, run the development server:
+## Features
+
+- Dark, genre-inclusive design
+- Upcoming show calendar with genre filters
+- External ticket links per show (Eventbrite, Ticketmaster, etc.)
+- Venue highlights: full bar and pizza
+- Automatic daily Eventbrite show sync
+- Embedded Sanity Studio at `/studio` for staff to manage content
+
+## Tech stack
+
+- [Next.js](https://nextjs.org/) (App Router)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Sanity CMS](https://www.sanity.io/)
+
+## Getting started
+
+### 1. Install dependencies
+
+```bash
+npm install
+```
+
+### 2. Create a Sanity project
+
+1. Go to [sanity.io/manage](https://www.sanity.io/manage) and create a new project.
+2. Copy your **Project ID**.
+3. Create a dataset named `production` (or use your preferred name).
+
+### 3. Configure environment variables
+
+Copy the example env file and fill in your Sanity credentials:
+
+```bash
+cp .env.example .env.local
+```
+
+```env
+NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
+NEXT_PUBLIC_SANITY_DATASET=production
+SANITY_API_READ_TOKEN=           # optional, for draft preview later
+CRON_SECRET=your_random_secret   # required for daily Eventbrite sync job
+```
+
+### 4. Eventbrite show sync
+
+When Sanity is not configured, shows are pulled from the [Downtown Music Hall Eventbrite organizer page](https://www.eventbrite.com/o/downtown-music-hall-31764488781).
+
+- Shows are cached for **24 hours**
+- A cron job runs **daily at 12:00 UTC** and refreshes the cache
+- New Eventbrite listings are picked up automatically
+
+**Manual sync (local):**
+
+```bash
+npm run sync:shows
+```
+
+**Trigger sync via API (requires `CRON_SECRET` in `.env.local`):**
+
+```bash
+curl -H "Authorization: Bearer $CRON_SECRET" http://localhost:3000/api/cron/sync-eventbrite
+```
+
+On Vercel, add `CRON_SECRET` to your project environment variables. The schedule is defined in [`vercel.json`](vercel.json).
+
+### 5. Run the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) for the site and [http://localhost:3000/studio](http://localhost:3000/studio) for the CMS.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Managing content
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Shows
 
-## Learn More
+In Sanity Studio, create **Show** documents with:
 
-To learn more about Next.js, take a look at the following resources:
+| Field | Description |
+|---|---|
+| Title | Artist or event name |
+| Slug | URL-friendly identifier |
+| Date & Time | Show datetime (past shows auto-hide) |
+| Genres | Tags for filtering (Rock, Jazz, etc.) |
+| Ticket URL | External link to purchase tickets |
+| Poster | Event image |
+| Featured | Spotlight on homepage |
+| Family Friendly | Badge for all-ages-friendly shows |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Site settings
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Create one **Site Settings** document to customize:
 
-## Deploy on Vercel
+- Venue name, tagline, address
+- Phone, email, social links
+- Google Maps embed URL
+- About page content
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Default placeholder values are used until site settings are published in Sanity.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deploy
+
+### Vercel (recommended)
+
+1. Push this repo to GitHub.
+2. Import the project in [Vercel](https://vercel.com/new).
+3. Add the environment variables from `.env.example`.
+4. Deploy.
+
+Shows revalidate every 60 seconds (ISR), so new CMS content appears within about a minute.
+
+### Sanity Studio
+
+The studio is embedded at `/studio` on your deployed site. For production, configure CORS in your Sanity project settings to allow your Vercel domain.
+
+## Project structure
+
+```
+app/
+  (site)/          # Public marketing pages
+  studio/          # Sanity Studio
+components/        # UI components
+sanity/
+  schema/          # CMS content models
+  lib/             # Client, queries, image helpers
+lib/               # Shared types and defaults
+```
+
+## Scripts
+
+| Command | Description |
+|---|---|
+| `npm run dev` | Start development server |
+| `npm run build` | Production build |
+| `npm run start` | Start production server |
+| `npm run lint` | Run ESLint |

@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/sync-eventbrite",
+      "schedule": "0 12 * * *"
+    }
+  ]
+}
